@@ -30,6 +30,7 @@ async function storeOrder(){
         console.log(response.data);
         if(response.data.errors){
             errors.value = response.data.errors;
+            // alert(errors.value.items);
         }else{
             errors.value = {};
         }
@@ -56,7 +57,7 @@ async function storeOrder(){
 
         <form @submit.prevent class="mt-6 space-y-6">
         <!-- <form @submit.prevent="form.post(route('orders.store'))" class="mt-6 space-y-6"> -->
-
+            <InputError class="mt-2" v-if="errors.error_time_out" :message="errors.error_time_out[0]" />
             <div>
                 <InputLabel for="amount" value="Amount" />
 

@@ -21,7 +21,7 @@ class OrderController extends Controller
             'buyer' => 'required|max:20',
             'receipt_id' => 'required|max:20',
             'items' => 'required|unique:orders|max:255',
-            'buyer_email' => 'required|max:50',
+            'buyer_email' => 'required|email|max:50',
             'note' => 'required|max:30',
             'city' => 'required|max:20',
             'phone' => 'required|max:20',
@@ -35,10 +35,14 @@ class OrderController extends Controller
 
         }
         else {
+
+
         $receiptId = $request->input('receipt_id');
         $salt = bin2hex(random_bytes(16));
         $hashKey = hash('sha512', $receiptId . $salt);
-            
+        $this->setUserCookie(auth()->user()->id); 
+        $this->checkUserCookie();
+
         $data = array(
             'amount' => $request->input('amount'),
             'buyer' => $request->input('buyer'),
@@ -54,10 +58,33 @@ class OrderController extends Controller
             'entry_by' => auth()->user()->id,
         );
         Order::create($data);
-        return $data;
+
+        // return $this->setUserCookie(auth()->user()->id); 
+        // return $request->cookie('user_id');
+        return; 
 
         }
  
+    }
+    public function setUserCookie($userId)
+    {
+        $cookie = cookie('user_id', $userId, 1440);
+        // response('Cookie set')->cookie($cookie);
+        // return $cookie;
+    }
+
+    public function checkUserCookie()
+    {
+        if (request()->hasCookie('user_id')) {
+            $userId = request()->cookie('user_id');
+
+            if($userId == auth()->user()->id){
+                $errorArray = array(
+                    'error_time_out' => 'You have already submitted within the past 24 hours.'
+                );
+                return $errorArray;
+            }
+        } 
     }
 
     private function time_converter(){

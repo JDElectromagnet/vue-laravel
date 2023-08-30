@@ -12,10 +12,7 @@ class PreventDuplicateSubmissions
      * Handle an incoming request.
      *
     */
-    // public function handle(Request $request, Closure $next): Response
-    // {
-    //     return $next($request);
-    // }
+
     public function handle(Request $request, Closure $next)
     {
         $cookieName = 'last_submission_time';
@@ -23,7 +20,7 @@ class PreventDuplicateSubmissions
 
         if ($request->hasCookie($cookieName)) {
             // User has submitted recently, prevent the submission
-            return redirect()->back()->with('error', 'You have already submitted within the past 24 hours.');
+            return response()->json(['error_time_out' => 'You have already submitted within the past 24 hours.'], 400);
         }
 
         // Set a cookie to record the submission time
