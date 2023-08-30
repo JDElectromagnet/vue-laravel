@@ -62,18 +62,18 @@ onMounted(() => {
       <!-- {{ tableData }} -->
       <tbody>
         <tr v-for="(rowData, index) in tableData" :key="index">
-        <td>{{ rowData.amount }}</td>
-        <td>{{ rowData.buyer }}</td>
-        <td>{{ rowData.receipt_id }}</td>
-        <td>{{ rowData.items }}</td>
-        <td>{{ rowData.buyer_email }}</td>
-        <td>{{ rowData.note }}</td>
-        <td>{{ rowData.city }}</td>
-        <td>{{ rowData.phone }}</td>
-        <td>{{ rowData.buyer_ip }}</td>
-        <td>{{ rowData.hash_key }}</td>
-        <td>{{ rowData.entry_at }}</td>
-        <td>{{ rowData.entry_by }}</td>
+            <td>{{ rowData.amount }}</td>
+            <td>{{ rowData.buyer }}</td>
+            <td>{{ rowData.receipt_id }}</td>
+            <td>{{ rowData.items }}</td>
+            <td>{{ rowData.buyer_email }}</td>
+            <td>{{ rowData.note }}</td>
+            <td>{{ rowData.city }}</td>
+            <td>{{ rowData.phone }}</td>
+            <td>{{ rowData.buyer_ip }}</td>
+            <td>{{ rowData.hash_key }}</td>
+            <td>{{ rowData.entry_at }}</td>
+            <td>{{ rowData.entry_by }}</td>
         </tr>
       </tbody>
     </table>

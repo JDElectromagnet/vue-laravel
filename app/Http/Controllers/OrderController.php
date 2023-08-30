@@ -37,7 +37,7 @@ class OrderController extends Controller
         }
         else {
         $receiptId = $request->input('receipt_id');
-        $salt = 'your-salt'; // Replace with your actual salt
+        $salt = bin2hex(random_bytes(16));
         $hashKey = hash('sha512', $receiptId . $salt);
             
         $data = array(
