@@ -28,7 +28,6 @@ class OrderController extends Controller
         ]);
  
         if ($validator->fails()) {
-            // echo json_encode("JD");
             $errorArray = array(
                 'errors' => $validator->errors()->toArray()
             );
