@@ -36,6 +36,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/list', [OrderController::class, 'list'])->name('orders.list');
+    Route::get('/orders/get', [OrderController::class, 'get'])->name('orders.get');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

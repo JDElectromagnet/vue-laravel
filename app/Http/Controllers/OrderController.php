@@ -25,10 +25,6 @@ class OrderController extends Controller
             'note' => 'required|max:30',
             'city' => 'required|max:20',
             'phone' => 'required|max:20',
-            // 'buyer_ip' => 'required',
-            // 'hash_key' => 'required|max:255',
-            // 'entry_at' => 'required',
-            // 'entry_by' => 'required|max:10',
         ]);
  
         if ($validator->fails()) {
@@ -40,9 +36,6 @@ class OrderController extends Controller
 
         }
         else {
-            // $errorArray = array(
-            //     'errors' => null
-            // );
         $receiptId = $request->input('receipt_id');
         $salt = 'your-salt'; // Replace with your actual salt
         $hashKey = hash('sha512', $receiptId . $salt);
@@ -80,6 +73,16 @@ class OrderController extends Controller
         $dhakaTimeString = $dhakaTime->format('Y-m-d');
 
         return $dhakaTimeString;
+    }
+
+    public function list(){
+        return Inertia::render('OrderList');
+    }
+
+    public function get(){
+        $data  = Order::all();
+        return $data;
+        // return Inertia::render('OrderList', $data);
     }
 
     
