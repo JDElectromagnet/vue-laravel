@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Order;
+use DateTime;
+use DateTimeZone;
 
 class OrderController extends Controller
 {
@@ -14,8 +17,8 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'amount' => 'required',
-            'buyer' => 'required|max:255',
+            'amount' => 'required|numeric',
+            'buyer' => 'required|max:20',
             'receipt_id' => 'required|max:20',
             'items' => 'required|unique:orders|max:255',
             'buyer_email' => 'required|max:50',
@@ -40,7 +43,9 @@ class OrderController extends Controller
             // $errorArray = array(
             //     'errors' => null
             // );
-
+        $receiptId = $request->input('receipt_id');
+        $salt = 'your-salt'; // Replace with your actual salt
+        $hashKey = hash('sha512', $receiptId . $salt);
             
         $data = array(
             'amount' => $request->input('amount'),
@@ -51,23 +56,30 @@ class OrderController extends Controller
             'note' => $request->input('note'),
             'city' => $request->input('city'),
             'phone' => $request->input('phone'),
-            // 'buyer_ip' => $request->buyer_ip(),
-            // 'hash_key' => $request->hash_key(),
-            // 'entry_at' => $request->entry_at(),
-            // 'entry_by' => $request->entry_by(),
-            'errors' => null
+            'buyer_ip' => $request->ip(),
+            'hash_key' => $hashKey,
+            'entry_at' => $this->time_converter(),
+            'entry_by' => auth()->user()->id,
         );
+        Order::create($data);
         return $data;
 
         }
-        
-        // // Retrieve the validated input...
-        // $validated = $validator->validated();
  
-        // // Retrieve a portion of the validated input...
-        // $validated = $validator->safe()->only(['name', 'email']);
-        // $validated = $validator->safe()->except(['name', 'email']);
- 
+    }
+
+    private function time_converter(){
+        $serverTimezone = new DateTimeZone('UTC');
+
+        $serverTime = new DateTime('now', $serverTimezone);
+
+        $dhakaTimezone = new DateTimeZone('Asia/Dhaka');
+
+        $dhakaTime = $serverTime->setTimezone($dhakaTimezone);
+
+        $dhakaTimeString = $dhakaTime->format('Y-m-d');
+
+        return $dhakaTimeString;
     }
 
     
